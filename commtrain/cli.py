@@ -62,7 +62,7 @@ def _write_outputs(audio: Path, m: dict) -> dict[str, Path]:
 def cmd_analyze(args) -> int:
     from .history import append_row, row_from_metrics
 
-    audio = Path(args.audio)
+    audio = Path(args.audio).expanduser()
     m = run_analysis(audio, args.task, args.week, args.model, args.device, args.compute_type)
     paths = _write_outputs(audio, m)
     print(f"レポート:{paths['report']}")
@@ -76,7 +76,7 @@ def cmd_analyze(args) -> int:
 def cmd_packet(args) -> int:
     from .report import render_packet
 
-    audio = Path(args.audio)
+    audio = Path(args.audio).expanduser()
     paths = _out_paths(audio)
     if paths["metrics"].exists() and not args.reanalyze:
         m = json.loads(paths["metrics"].read_text(encoding="utf-8"))

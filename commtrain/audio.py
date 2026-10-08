@@ -17,7 +17,12 @@ def load_audio(path: str | Path, sr: int = SR) -> np.ndarray:
     """ffmpeg で任意の音声を sr Hz モノラル float32 に変換して返す。"""
     path = Path(path)
     if not path.exists():
-        raise FileNotFoundError(f"音声ファイルが見つかりません: {path}")
+        msg = f"音声ファイルが見つかりません: {path}"
+        if path.parent.is_dir():
+            near = sorted(p.name for p in path.parent.iterdir() if p.suffix.lower() in SUPPORTED_EXTS)
+            if near:
+                msg += "\n同じフォルダにある音声ファイル:\n" + "\n".join(f"  {n}" for n in near[:20])
+        raise FileNotFoundError(msg)
     if path.suffix.lower() not in SUPPORTED_EXTS:
         print(
             f"注意: {path.suffix} は想定外の形式です(wav / m4a / mp3 を想定)。ffmpeg で読み込みを試みます。",
