@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+build/
+dist/
+# 録音と出力はリポジトリに入れない
+*.wav
+*.m4a
+*.mp3
+*_report.md
+*_metrics.json
+*_packet.md
